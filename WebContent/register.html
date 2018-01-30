@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<title>Registration</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link type="text/css" rel="stylesheet" href="static/register.css" />
+<link href="static/style.css" rel="stylesheet">
+</head>
+<body>
+	<div class="container">
+			<div class="myCirle">
+				<div class="under_logo">
+					<p>Welcome to Evento!</p>
+				</div>
+			</div>
+			<p id="msg" style="color:red;font-size:15px;margin-bottom:-25px;"></p>
+			<form id="form" name="form" action="register" method="post">
+			<div class="form-input">
+				<input type="text" name="name" placeholder="Enter First Name"
+					required="required" /> 
+				<input type="text" name="lastName"
+					placeholder="Enter Last Name" required="required" /><br />
+				<input type="password" name="password" placeholder="Enter password"
+					required="required" /> 
+				<input type="password" name="confirmPassword" placeholder="Confirm password"
+					required="required" /> 
+				<br />
+				<input type="email" name="email"
+					placeholder="Enter e-mail" required="required" />
+				<input type="email" name="confirmEmail"
+					placeholder="Confirm e-mail" required="required" /><br />
+				<br /> 
+				<input class="btn btn-info btn-lg" id="submit" type="submit" name="submit"
+					value="Register"/>
+				<button data-toggle="modal" style="visibility:hidden" data-target="#myModal" value="" id="modalButton"></button>
+				</div>
+				</form>
+			</div>
+			<div class="modal fade" id="myModal" role="dialog">
+			    <div class="modal-dialog modal-lg">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			          <h3 class="modal-title">What are your interests?</h3>
+			        </div>
+			        <div class="modal-body">
+			          <p><div id="content">
+						<div class="row">
+							<div class="clear"></div>
+							<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Communication</h4> <img id="communication" target="communication" src="static/plus2.png"
+									class="plus" /> <img
+									class="category" alt=""
+									width=165x; height=135px; src="static/Event.jpg"><a></a></li>
+							</ul>
+								<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Art</h4> <img id="art" target="art" src="static/plus2.png"
+									class="plus" /> <img class="category" alt=""
+									width=165x; height=135px; src="https://pbs.twimg.com/media/DQdThzuUIAAPHB-.jpg"><a></a></li>
+							</ul>
+								<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Charity</h4> <img id="charity" target="charity" src="static/plus2.png" data-toggle="modal" data-target="#smallModal"
+									class="plus" /> <img class="category" alt="" width=165x; height=135px; src="https://static1.squarespace.com/static/57f70a19ff7c50f9441d037c/t/596425a7197aea233e50a6bb/1499735465839/img_0050_01.jpg"><a></a></li>
+							</ul>
+								<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Food</h4> <img id="food" target="food" src="static/plus2.png" data-toggle="modal" data-target="#smallModal"
+									class="plus" /> <img class="category" alt="" width=165x; height=135px; src="https://timedotcom.files.wordpress.com/2017/10/eating-greasy-food.jpeg"><a></a></li>
+							</ul>
+							<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Drinks</h4> <img id="dirnks" target="drinks" src="static/plus2.png" data-toggle="modal" data-target="#smallModal"
+									class="plus" /> <img class="category" alt="" width=165px; height=135px; src="https://images.r.cruisecritic.com/features/2016/06/bottoms-up-hero.jpg
+									"><a></a></li>
+							</ul>
+								<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Shopping</h4> <img id="shopping" target="shopping" src="static/plus2.png" data-toggle="modal" data-target="#smallModal"
+									class="plus" /> <img class="category" alt="" width=165px height=135px; src="https://cdn.vox-cdn.com/thumbor/1T-A9gZZxe1Ps43k_imYFHXFjYU=/0x0:2121x1414/1200x675/filters:focal(892x538:1230x876)/cdn.vox-cdn.com/uploads/chorus_image/image/53812171/GettyImages_463173435.0.jpg"><a></a></li>
+							</ul>
+									<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Books</h4> <img id="books" target="books" src="static/plus2.png" data-toggle="modal" data-target="#smallModal"
+									class="plus" /> <img class="category" alt="" width=165px height=135px; src="https://nowtoronto.com/downloads/79632/download/Books-IFOA-2016-Tanja-Tiziana.jpg?cb=509f5df0f0b6f55c699c36c1a1282824"><a></a></li>
+							</ul>
+									<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Music</h4> <img id="music" target="music" src="static/plus2.png" data-toggle="modal" data-target="#smallModal"
+									class="plus" /> <img class="category" alt="" width=165px height=135px; src="https://media.timeout.com/images/104102187/image.jpg"><a></a></li>
+							</ul>
+									<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Party</h4> <img id="party" target="party" src="static/plus2.png" data-toggle="modal" data-target="#smallModal"
+									class="plus" /> <img class="category" alt="" width=165px height=135px; src="https://blogmedia.evbstatic.com/wp-content/uploads/bloguk/2016/02/08144658/shutterstock_351380480.jpg"><a></a></li>
+							</ul>
+								<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Sport</h4> <img id="sport" target="sport" src="static/plus2.png" data-toggle="modal" data-target="#smallModal"
+									class="plus" /> <img class="category" alt="" width=165px height=135px; src="https://static.garmincdn.com/en_US/store/sports_rec/category/sportsrec_signoff_fitness_tracker_activity_tracker.jpg"><a></a></li>
+							</ul>
+								<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Comedy</h4> <img id="comedy" target="comedy" src="static/plus2.png" data-toggle="modal" data-target="#smallModal"
+									class="plus" /> <img class="category" alt="" width=165px height=135px; src="http://1.bp.blogspot.com/-bnsjaQhcdjk/VjoTKhmkFNI/AAAAAAAAAPY/kIc-MbMHWQ8/s1600/ThinkstockPhotos-471572929.jpg"><a></a></li>
+							</ul>
+								<ul class="portfolio clearfix">
+								<li class="box"><h4 style="color:black;">Trades</h4> <img id="trades" target="trades" src="static/plus2.png" data-toggle="modal" data-target="#smallModal"
+									class="plus" /> <img class="category" alt="" width=165px height=135px; src="https://fthmb.tqn.com/tZ8ujszm0lRPDtpGvWLYSBmm0OU=/768x0/filters:no_upscale()/hands-off-or-actively-manage-trades-58335ea65f9b58d5b17f2bae.jpg"><a></a></li>
+							</ul>
+						</div>
+					</div>
+			        </div>
+			        <img class="tick" id="tick1" style="display:none"/>
+			        <div class="modal-footer">
+			        <button type="button" class="btn btn-default" >Continue</button>
+			          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        </div>
+			      </div>
+			</div>
+	</div>
+	<div class="modal fade" id="smallModal" role="dialog">
+    <div class="modal-dialog modal-sm" style="width:15% !important; margin-left:42%;margin-top:10%;">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p style="color:black; font-size:18px;">Category added!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+$(document).ready(function() {
+	var modalButton = document.getElementById("modalButton");
+	var message = document.getElementById("msg");
+
+	$("#submit").on('click', function(event) {
+	   event.preventDefault();
+	   msg.innerHTML = "";
+		$.ajax({
+			url : 'register',
+			type : 'POST',
+			data : $("#form").serialize(),
+			success : function(result) {
+				modalButton.click();
+				event.preventDefault();
+			},
+			error : function(xhr, resp, text) {
+				console.log(xhr, resp, text);
+				message.append("Unsuccessful registration. Try again!")
+			}
+		});
+	});
+});
+</script>
+	
+<script type="text/javascript">
+$('.plus').on('click', function(e){
+	
+    e.preventDefault();   
+    $button = $(this);
+   	var x = $(this).attr("target");
+    $.post("category",
+  		  {
+  		    	category:x,
+		});
+});
+
+$(document).ready(function() {
+	$(".plus").click(function(event) {
+		$(this).addClass('hidden');
+	});
+});
+</script>
+</body>
+</html>

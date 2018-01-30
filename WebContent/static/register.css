@@ -1,0 +1,97 @@
+    * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-size:100%;
+            background-image:url(Event.jpg);
+            font-family: Calibri, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            height: 600px;
+            text-align:center;
+            background-color: rgba(1, 1, 1, 0.70);
+            margin: 0 auto;
+            margin-top: 125px;
+        }
+
+        input {
+            height: 40px;
+            width: 250px;
+            font-size: 18px;
+            margin-bottom: -35px;
+            background-color: rgba(128,128,128,0.55);
+            padding-left: 30px;
+            border-style: inherit;
+            border-radius: 5px;
+            margin-left:30px;
+            border: 1px solid rgba(0,0,0,0.3);
+            margin-top: 50px;
+        }
+
+        select {
+            height: 40px;
+            width: 285px;
+            font-size: 18px;
+            margin-bottom: -35px;
+            margin-left: 30px;
+            background-color: rgba(128,128,128,0.55);
+            padding-left: 26px;
+            border: 1px solid rgba(0,0,0,0.3);
+            border-style: inherit;
+            border-radius: 5px;
+            border: 1px solid rgba(0,0,0,0.3);
+            margin-top: 50px;
+        }
+
+        .container img {
+            width: 135px;
+            height: 135px;
+            margin-top: -63px;
+            margin-bottom: 0px;
+            border-radius: 5px;
+            
+           
+        }
+
+        .btn-reg {
+            text-align: center;
+            margin-top: 70px;
+            border-radius: 5px;
+            border: 1px solid rgba(0,0,0,0.3);
+            background-color: rgba(0, 140, 125,0.9);
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translate3d(0px,-140px,0px);
+                animation-timing-function: ease-in;
+                opacity: .1;
+            }
+
+            50% {
+                transform: translate3d(0px,23px,0px);
+                animation-timing-function: ease-out;
+            }
+
+            100% {
+                transform: translate3d(0px,0px,0px);
+                animation-timing-function: ease-out;
+            }
+        }
+
+        .myCirle {
+           
+            animation: slide 2s;
+        }
+
+.under_logo {
+	color: aquamarine;
+	font-size: 35px;
+	font-family: Calibri;
+	margin-bottom: 1px;
+	margin-top: 15px;
+}
