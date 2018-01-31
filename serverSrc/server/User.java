@@ -5,12 +5,16 @@ public class User {
 	private String lastName;
 	private String pass;
 	private String email;
+	private int id;
+	private String interests;
 	
-	public User(String name, String lastName, String pass, String email) {
+	public User(String name, String lastName, String pass, String email, int id, String interests) {
 		this.name = name;
 		this.lastName = lastName;
 		this.pass = pass;
 		this.email = email;
+		this.id = id;
+		this.interests = interests;
 	}
 	
 	public String getUsername() {
