@@ -16,6 +16,14 @@ public class User {
 		this.interests = interests;
 	}
 	
+	public User(String name, String lastName, String pass, String email, int id, String interests) {
+		this.name = name;
+		this.lastName = lastName;
+		this.pass = pass;
+		this.email = email;
+		this.interests = interests;
+	}
+	
 	public String getName() {
 		return name;
 	}

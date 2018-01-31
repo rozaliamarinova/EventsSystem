@@ -4,14 +4,12 @@
 # In[63]:
 
 
-# from selenium import webdriver
 from bs4 import BeautifulSoup
 import requests
 from datetime import datetime
 import csv
 
-page = requests.get("http://www.eventim.bg/bg/tursi/")
-soup = BeautifulSoup(page.text, 'html.parser')
+url = "http://www.eventim.bg/bg/tursi/"
 baseURL = "http://www.eventim.bg"
 eventContent = "List-content"
 
@@ -40,20 +38,33 @@ def getEventName(event):
 def getEventLocation(event):
     locationInfo = event.find("div", itemprop="location")
     location = {}
-    name = locationInfo.find("strong", itemprop="name").text
+    loc = locationInfo.find("strong", itemprop="name")
+    if loc is None:
+        name = ""
+    else:
+        name = loc.text
     address = locationInfo.find("address", itemprop="address")
-    city = address.find("span", itemprop="addressLocality").text
-#     streetAddress = address.find("meta", itemprop="streetAddress").attrs["content"]
+    if address is None:
+        city = ""
+    else:
+        cityAddr = address.find("span", itemprop="addressLocality")
+        if cityAddr is None:
+            city = ""
+        else:
+            city = cityAddr.text
     return name + ":" + city
     
 
 def getEventDateTime(event):
     dateTimeInfo = event.findAll("div", class_="List-date")
-    spans = dateTimeInfo[0].findAll("span")
-    date = parseDate(spans[0].text)
-    if len(spans) > 1:
-        time = (spans[1].text).split('\xa0')[1]
-        date += " " + str(time)
+    if dateTimeInfo is None or not dateTimeInfo :
+        date = ""
+    else:
+        spans = dateTimeInfo[0].findAll("span")
+        date = parseDate(spans[0].text)
+        if len(spans) > 1:
+            time = (spans[1].text).split('\xa0')[1]
+            date += " " + str(time)
     return date
 
 def parseDate(dateStr):
@@ -67,10 +78,10 @@ def parseEventPage(pageURL):
     pageSource = requests.get(pageURL).text
     pageSoup = BeautifulSoup(pageSource, 'html.parser')
     imageLink = pageSoup.find("div", class_="pageheader-image pageheader-image--regular")
-    if imageLink is not None:
-        imageLink = imageLink.find("img").attrs["src"]
-    else:
+    if imageLink is None:
         imageLink = ""
+    else:
+        imageLink = imageLink.find("img").attrs["src"]
     subEvents = pageSoup.findAll("li", class_="List-item clearfix")
     listEvents = []
     for subEvent in subEvents:
@@ -83,14 +94,31 @@ def parseEventPage(pageURL):
         listEvents.append(eventAttrs)
     return listEvents
 
-events = soup.find_all("div", class_="List-item")
-parsedEvents = []
-for event in events:
-    pageURL = baseURL + event.find("a").attrs["href"]
-    parsedEvents += parseEventPage(pageURL)
+def parseEvents(rootPageURL):
+    parsedEvents = []
+        
+    while True:
+        page = requests.get(rootPageURL)
+        soup = BeautifulSoup(page.text, 'html.parser')
+        events = soup.find_all("div", class_="List-item")
+        for event in events:
+            pageURL = baseURL + event.find("a").attrs["href"]
+            parsedEvents += parseEventPage(pageURL)
+                
+        leftEvents = soup.find("div", class_="paging-divider").find("strong", class_="tr_ch").text
+        if leftEvents == "0":
+            print("no more events")
+            break
+        print("more events")
+        pagingLinkMore = soup.find("a", class_="paging-link--more").attrs["href"]
+        rootPageURL += pagingLinkMore
+        #print(pageURL)
+
+    return parsedEvents
 
 # print(parsedEvents)
 
+parsedEvents = parseEvents(url)
 with open('events.csv', 'w') as csv_file:
     attributes = ['eventName', 'eventLocation', 'datetime', 'pageLink', 'imgLink']
     writer = csv.DictWriter(csv_file, attributes)
