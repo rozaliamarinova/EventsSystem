@@ -16,13 +16,6 @@ import javax.servlet.http.HttpSession;
 public class CategoriesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CategoriesServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -39,10 +32,8 @@ public class CategoriesServlet extends HttpServlet {
 		// TODO Auto-generated method stub	
 		String category = request.getParameter("category");
 		HttpSession session = request.getSession();
-		StringBuilder interests = (StringBuilder)session.getAttribute("interests");
+		StringBuilder interests = new StringBuilder((String)session.getAttribute("interests"));
 		session.setAttribute("interests", setCategories(category, interests));
-		
-		doGet(request, response);
 	}
 
 	private String setCategories(String categoryName, StringBuilder categories) {
