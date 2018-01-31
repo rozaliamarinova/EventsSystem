@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class LoginServlet
@@ -38,12 +39,21 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String pass = request.getParameter("password");
-		String passConfirmation = request.getParameter("confirmPassword");
+		
+		
+		//String passConfirmation = request.getParameter("confirmPassword");
 
-		if (pass.length() < 8 ) { //|| !getPassword(email).equals(pass)) {
+		if (pass.length() < 8) { //|| !getPassword(email).equals(pass)) {
 			RequestDispatcher view = request.getRequestDispatcher("index.html");
 			view.forward(request, response);
 		} else {
+			
+			//set session - email, 
+			HttpSession session = request.getSession();
+			session.setAttribute("email", email);
+			
+			
+			//forward to index.html
 			RequestDispatcher view = request.getRequestDispatcher("index.html");
 			view.forward(request, response);
 		}
