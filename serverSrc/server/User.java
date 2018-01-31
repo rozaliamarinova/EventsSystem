@@ -8,6 +8,14 @@ public class User {
 	private int id;
 	private String interests;
 	
+	public User(String name, String lastName, String pass, String email, String interests) {
+		this.name = name;
+		this.lastName = lastName;
+		this.pass = pass;
+		this.email = email;
+		this.interests = interests;
+	}
+	
 	public User(String name, String lastName, String pass, String email, int id, String interests) {
 		this.name = name;
 		this.lastName = lastName;
