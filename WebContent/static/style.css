@@ -212,8 +212,6 @@ h4 {
     margin: 5px 5px 0 0
 }
 
-p { color:#fff; padding:15px;}
-
 .plus {
 	width:35px;height:35px;position:absolute; z-index:999;
 	cursor:pointer;
