@@ -24,22 +24,22 @@
 				<input type="text" name="name" placeholder="Enter First Name"
 					required="required" /> 
 				<input type="text" name="lastName"
-					placeholder="Enter Last Name" required="required" /><br />
+					placeholder="Enter Last Name" /><br />
 				<input type="password" name="password" placeholder="Enter password"
-					required="required" /> 
+				 /> 
 				<input type="password" name="confirmPassword" placeholder="Confirm password"
-					required="required" /> 
+				 /> 
 				<br />
 				<input type="email" name="email"
-					placeholder="Enter e-mail" required="required" />
+					placeholder="Enter e-mail" />
 				<input type="email" name="confirmEmail"
-					placeholder="Confirm e-mail" required="required" /><br />
+					placeholder="Confirm e-mail" /><br />
 				<br /> 
 				<input class="btn btn-info btn-lg" id="submit" type="submit" name="submit"
 					value="Register"/>
-				<button data-toggle="modal" style="visibility:hidden" data-target="#myModal" value="" id="modalButton"></button>
 				</div>
 				</form>
+				<button data-toggle="modal" style="visibility:hidden" data-target="#myModal" value="" id="modalButton"></button>
 			</div>
 			<div class="modal fade" id="myModal" role="dialog">
 			    <div class="modal-dialog modal-lg">
@@ -129,7 +129,7 @@ $(document).ready(function() {
 	var modalButton = document.getElementById("modalButton");
 	var message = document.getElementById("msg");
 
-	$("#submit").on('click', function(event) {
+	$("#submit").on('click',function(event) {
 	   event.preventDefault();
 	   msg.innerHTML = "";
 		$.ajax({
@@ -138,7 +138,6 @@ $(document).ready(function() {
 			data : $("#form").serialize(),
 			success : function(result) {
 				modalButton.click();
-				event.preventDefault();
 			},
 			error : function(xhr, resp, text) {
 				console.log(xhr, resp, text);

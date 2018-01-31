@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 import exceptions.InvalidEmailException;
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserLoginException;
@@ -67,7 +64,7 @@ public class RegisterServlet extends HttpServlet {
 			String emailConfirmation) {
 		return name == null || name.isEmpty() || name.length() > 45 || lastname == null || lastname.isEmpty()
 				|| lastname.length() > 45 || pass == null || pass.length() < 8 || !pass.equals(passConfirmation)
-				|| email == null || email.isEmpty() || !email.contains("@") || !email.equals(emailConfirmation);
+				|| email == null || email.isEmpty() || !email.equals(emailConfirmation);
 	}
 
 }
