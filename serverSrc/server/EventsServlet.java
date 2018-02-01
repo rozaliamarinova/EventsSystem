@@ -19,10 +19,10 @@ public class EventsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		List<Event> events = new ArrayList<>();
-		events.add(new Event(1, "Lili Ivanova", "Vkushti", "12/12/12", "http://haha.com", "http://haha.com", 3));
-		events.add(new Event(2, "Lili Ivanova", "Vkushti", "12/12/12", "http://haha.com", "http://haha.com", 3));
-		events.add(new Event(3, "Lili Ivanova", "Navun", "12/12/12", "http://haha.com", "http://haha.com", 3));
-
+		events.add(new Event(2, "Sofia Art Book Fest", "St Kliment Ohridski", "12 March 2018", "http://www.programata.bg/img/gallery/festival_2085.jpg?141237680", "http://www.programata.bg/?p=180&l=2&c=1&id=2085", 103));
+		events.add(new Event(3, "Festival of Ethnographic Film", "Vlaikova", "14 November 2018", "http://www.programata.bg/img/gallery/festival_2130.jpg?1269908820", "http://www.programata.bg/?p=180&l=2&c=1&id=2130", 30));
+		events.add(new Event(1, "Lili Ivanova Concert", "Arena Armeec", "14 July 2018", "https://arhiv.marica.bg/f/news/833/640_925d81ab260a0085aed509ea3008e5bf.jpg", "", 930));
+		events.add(new Event(4, "Apolonia 2017", "Sozopol", "5th September 2018", "http://www.programata.bg/img/gallery/festival_2070.jpg?1401406094", "www.apolonia.bg", 425));
 		request.getSession().setAttribute("events", events);
 		response.sendRedirect("categories.jsp");
 	}
