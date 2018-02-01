@@ -106,54 +106,47 @@ public class JDBC {
         System.out.println("Goodbye!");
     } // end openConnection
 
-//    protected void executeSelectQuery(String sql) {
-//        try {
-//            //STEP 2: Register JDBC driver
-//            Class.forName("com.mysql.jdbc.Driver");
-//            this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
-//            this.stmt = this.conn.createStatement();
-//            ResultSet rs = this.stmt.executeQuery(sql);
-//            while (rs.next()) {
-//
-//                //Retrieve by column name
-//                int users_id = rs.getInt("users_id");
-//                String first_name = rs.getString("first_name");
-//                String last_name = rs.getString("last_name");
-//                String email = rs.getString("email");
-//                String password = rs.getString("password");
-//                String interests = rs.getString("interests");
-//                String attended_per_category = rs.getString("attended_per_category");
-//
-//                //Display values
-//                System.out.println(users_id + " " + first_name + " " + last_name + " " + email + " " + password + " " + interests + " " + attended_per_category);
-//            }
-//
-//            rs.close();
-//
-//        } catch (SQLException se) {
-//            //Handle errors for JDBC
-//            se.printStackTrace();
-//        } catch (Exception e) {
-//            //Handle errors for Class.forName
-//            e.printStackTrace();
-//        } finally {
-//            //finally block used to close resources
-//            try {
-//                if (stmt != null) {
-//                    conn.close();
-//                }
-//            } catch (SQLException se) {
-//            }// do nothing
-//            try {
-//                if (conn != null) {
-//                    conn.close();
-//                }
-//            } catch (SQLException se) {
-//                se.printStackTrace();
-//            }//end finally try
-//        }//end try
-//        System.out.println("Goodbye!");
-//    } // end executeQuery
+    protected int getEventID(String name) {
+        int id = 0;
+        try {
+            //STEP 2: Register JDBC driver
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
+            this.stmt = this.conn.createStatement();
+            ResultSet rs = this.stmt.executeQuery("Select events_id From events Where name = '" + name + "'");
+            while (rs.next()) {
+
+                //Retrieve by column name
+                id = rs.getInt("events_id");
+            }
+
+            rs.close();
+
+        } catch (SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally {
+            //finally block used to close resources
+            try {
+                if (stmt != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+            }// do nothing
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }//end finally try
+        }//end try
+        return id;
+    } // end executeQuery
 
     protected void executeSelectQuery(String sql) {
         try {
