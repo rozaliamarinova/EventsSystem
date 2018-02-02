@@ -14,6 +14,12 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <style type="text/css">
+  .btn.btn-outline-info.clicked {
+  	background: #17a2b8;
+  	color: white;
+  }
+  </style>
 </head>
 
 <body background="static/popup_linen_gray.jpg">
@@ -57,27 +63,27 @@
 <div
 	style=" height: 600px; padding: 20px;">
 	<div class="bg-content">
-		<div id="content" style="width:50%;">
+		<div id="content" style="width:100%;">
 			<div class="card-group">
 			<% ArrayList<Event> events = (ArrayList)session.getAttribute("events");%>
 			<% for(Event event : events) { %>
-			  <div class="card bg-light text-dark">
-			    <img class="card-img-top" src="static/Event.jpg" alt="Card image cap">
+			  <div class="card bg-light text-dark" style="margin-right:20px;">
+			    <img class="card-img-top" src="<%=event.getLinkEvent() %>" alt="Card image cap">
 			    <div class="card-block" style="padding:12px;">
 			      <h4 class="card-title"><%=event.getName() %></h4>
 			      <p class="card-text">	<p class="text-muted" style="display:inline-block;">Venue : </p>
 			      <%=event.getPlace() %>
 			       <p class="text-muted" style="display:inline-block;"> on </p>
 			       <%=event.getDate() %>
-			      <p class="text-muted" style="display:inline-block;"> For more information : 			      
+			      <p class="text-muted" style="display:inline-block;width:80%;;"> For more information : 			      
 			      <a style="text-decoration: underline; cursor:pointer;color:#17a2b8;"><%=event.getLinkEvent() %></a>
 			       </p>
 			      </p>
-			      <small class="text-muted" style="margin-bottom:2px;"><%=event.getNumGoing() %> going</small><br/>
-			      <p class="card-text">
-					<button type="button" class="btn btn-info">Going</button>
-					<button type="button" class="btn btn-outline-info">Interested</button>
+			      <p class="card-text" style="bottom:0%;">
+					<button type="button" id="going" target="<%=event.getId() %>" style="bottom:0%;" class="btn btn-outline-info" value="Going">Going</button>
+					<button type="button" id="interested" target="<%=event.getId() %>" class="btn btn-outline-info">Interested</button>
 			    </p>
+			      <small class="text-muted" style="margin-bottom:2px;"><%=event.getNumGoing() %> going</small><br/>
 			    </div>
 			  </div>
 			<% } %>
@@ -90,7 +96,32 @@
 <script src="prefixfree-1.0.7.js" type="text/javascript"></script>
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
 
+$('#going').on('click', function(e){
+
+$button = $(this);
+var x = $(this).attr("target");
+
+if($button.hasClass('clicked')){
+	 $.post("removeGoing", 
+				{ 
+					eventId: x,
+					
+				});
+    $button.removeClass('clicked');
+    $button.text('Not Going');
+} else {
+	  $.post("going", 
+				{ 
+		  	eventId: x,
+					
+				});
+    $button.addClass('clicked');          
+    $button.text('Going');
+}
+});
+</script>
 </body>
 
 </html>
