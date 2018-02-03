@@ -1,9 +1,13 @@
+package server;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,395 +22,429 @@ import java.util.logging.Logger;
  */
 public class JDBC {
 
-    private final String JDBC_DRIVER;
-    private final String DB_URL;
-    private final String USER;
-    private final String PASS;
-    private Connection conn;
-    private Statement stmt;
+	private final String JDBC_DRIVER;
+	private final String DB_URL;
+	private final String USER;
+	private final String PASS;
+	private Connection conn;
+	private Statement stmt;
 
-    public JDBC(String JDBC_DRIVER, String DB_URL, String USER, String PASS) {
-        this.JDBC_DRIVER = JDBC_DRIVER;
-        this.DB_URL = DB_URL;
-        this.USER = USER;
-        this.PASS = PASS;
-        this.conn = null;
-        this.stmt = null;
-    }
+	public JDBC(String JDBC_DRIVER, String DB_URL, String USER, String PASS) {
+		this.JDBC_DRIVER = JDBC_DRIVER;
+		this.DB_URL = DB_URL;
+		this.USER = USER;
+		this.PASS = PASS;
+		this.conn = null;
+		this.stmt = null;
+	}
 
-    public String getJDBC_DRIVER() {
-        return this.JDBC_DRIVER;
-    }
+	public String getJDBC_DRIVER() {
+		return this.JDBC_DRIVER;
+	}
 
-    public String getDB_URL() {
-        return this.DB_URL;
-    }
+	public String getDB_URL() {
+		return this.DB_URL;
+	}
 
-    public String getUSER() {
-        return this.USER;
-    }
+	public String getUSER() {
+		return this.USER;
+	}
 
-    public String getPASS() {
-        return this.PASS;
-    }
+	public String getPASS() {
+		return this.PASS;
+	}
 
-    public Connection getConn() {
-        return this.conn;
-    }
+	public Connection getConn() {
+		return this.conn;
+	}
 
-    public Statement getStmt() {
-        return this.stmt;
-    }
+	public Statement getStmt() {
+		return this.stmt;
+	}
 
-    public void setConn(Connection conn) {
-        this.conn = conn;
-    }
+	public void setConn(Connection conn) {
+		this.conn = conn;
+	}
 
-    public void setStmt(Statement stmt) {
-        this.stmt = stmt;
-    }
+	public void setStmt(Statement stmt) {
+		this.stmt = stmt;
+	}
 
-    protected void openConnection() {
-        try {
-            //STEP 2: Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
+	protected void openConnection() {
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
 
-            //STEP 3: Open a connection
-            System.out.println("Connecting to a selected database...");
-            this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
-            System.out.println("Connected database successfully...");
+			// STEP 3: Open a connection
+			System.out.println("Connecting to a selected database...");
+			this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
+			System.out.println("Connected database successfully...");
 
-            //STEP 4: Execute a query
-            System.out.println("Creating statement...");
-            this.stmt = this.conn.createStatement();
-            System.out.println("Created statement...");
+			// STEP 4: Execute a query
+			System.out.println("Creating statement...");
+			this.stmt = this.conn.createStatement();
+			System.out.println("Created statement...");
 
-        } catch (SQLException se) {
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }// do nothing
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
-        }//end try
-        System.out.println("Goodbye!");
-    } // end openConnection
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+			} // do nothing
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+		System.out.println("Goodbye!");
+	} // end openConnection
 
-    protected int getEventID(String name) {
-        int id = 0;
-        try {
-            //STEP 2: Register JDBC driver
-            
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
-            this.stmt = this.conn.createStatement();
-            ResultSet rs = this.stmt.executeQuery("Select events_id From events Where name = '" + name + "'");
-            while (rs.next()) {
+	protected int getEventID(String name) {
+		int id = 0;
+		try {
+			// STEP 2: Register JDBC driver
 
-                //Retrieve by column name
-                id = rs.getInt("events_id");
-            }
+			Class.forName("com.mysql.jdbc.Driver");
+			this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
+			this.stmt = this.conn.createStatement();
+			ResultSet rs = this.stmt.executeQuery("Select events_id From events Where name = '" + name + "'");
+			while (rs.next()) {
 
-            rs.close();
+				// Retrieve by column name
+				id = rs.getInt("events_id");
+			}
 
-        } catch (SQLException se) {
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }// do nothing
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
-        }//end try
-        return id;
-    } // end executeQuery
+			rs.close();
 
-    protected void executeSelectQuery(String sql) {
-        try {
-            //STEP 2: Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
-            this.stmt = this.conn.createStatement();
-            ResultSet rs = this.stmt.executeQuery(sql);
-            ResultSetMetaData rsmd = rs.getMetaData();
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+			} // do nothing
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+		return id;
+	} // end executeQuery
 
-            //PrintColumnTypes.printColTypes(rsmd);
-            System.out.println("");
+	protected void executeSelectQuery(String sql) {
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
+			this.stmt = this.conn.createStatement();
+			ResultSet rs = this.stmt.executeQuery(sql);
+			ResultSetMetaData rsmd = rs.getMetaData();
 
-            int numberOfColumns = rsmd.getColumnCount();
+			// PrintColumnTypes.printColTypes(rsmd);
+			System.out.println("");
 
-            for (int i = 1; i <= numberOfColumns; i++) {
-                if (i > 1) {
-                    System.out.print(",  ");
-                }
-                String columnName = rsmd.getColumnName(i);
-                System.out.print(columnName);
-            }
-            System.out.println("");
+			int numberOfColumns = rsmd.getColumnCount();
 
-            while (rs.next()) {
-                for (int i = 1; i <= numberOfColumns; i++) {
-                    if (i > 1) {
-                        System.out.print(",  ");
-                    }
-                    String columnValue = rs.getString(i);
-                    System.out.print(columnValue);
-                }
-                System.out.println("");
-            }
+			for (int i = 1; i <= numberOfColumns; i++) {
+				if (i > 1) {
+					System.out.print(",  ");
+				}
+				String columnName = rsmd.getColumnName(i);
+				System.out.print(columnName);
+			}
+			System.out.println("");
 
-            rs.close();
+			while (rs.next()) {
+				for (int i = 1; i <= numberOfColumns; i++) {
+					if (i > 1) {
+						System.out.print(",  ");
+					}
+					String columnValue = rs.getString(i);
+					System.out.print(columnValue);
+				}
+				System.out.println("");
+			}
 
-        } catch (SQLException se) {
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }// do nothing
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
-        }//end try
-        System.out.println("Goodbye!");
-    } // end executeQuery
+			rs.close();
 
-    protected void registerUser(String firstName, String lastName, String email, String password) {
-        String sql;
-        try {
-            //STEP 2: Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
-            this.stmt = this.conn.createStatement();
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+			} // do nothing
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+		System.out.println("Goodbye!");
+	} // end executeQuery
 
-            sql = "INSERT IGNORE INTO users (first_name, last_name, email, password) "
-                    + "VALUES (" + "'" + firstName + "', '" + lastName + "', '" + email + "', '" + password + "'" + ")";
-            stmt.executeUpdate(sql);
+	protected void registerUser(String firstName, String lastName, String email, String password) {
+		String sql;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
+			this.stmt = this.conn.createStatement();
 
-        } catch (SQLException se) {
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }// do nothing
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
-        }//end try
-        System.out.println("Goodbye!");
-    } // end registerUser
+			sql = "INSERT IGNORE INTO users (first_name, last_name, email, password) " + "VALUES (" + "'" + firstName
+					+ "', '" + lastName + "', '" + email + "', '" + password + "'" + ")";
+			stmt.executeUpdate(sql);
 
-    protected boolean isRegistered(String email, String password) {
-        String sql;
-        boolean isRegistered = true;
-        try {
-            //STEP 2: Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+			} // do nothing
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+		System.out.println("Goodbye!");
+	} // end registerUser
 
-            this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
-            this.stmt = this.conn.createStatement();
+	protected boolean isRegistered(String email, String password) {
+		String sql;
+		boolean isRegistered = true;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
 
-            sql = "SELECT * FROM users WHERE email = '" + email + "' AND password = '" + password + "'";
-            System.out.println("SELECT * FROM users WHERE email = '" + email + "' AND password = '" + password + "'");
+			this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
+			this.stmt = this.conn.createStatement();
 
-            ResultSet rs = this.stmt.executeQuery(sql);
+			sql = "SELECT * FROM users WHERE email = '" + email + "' AND password = '" + password + "'";
+			System.out.println("SELECT * FROM users WHERE email = '" + email + "' AND password = '" + password + "'");
 
-            if (!rs.next()) {
-                isRegistered = false;
-            }
+			ResultSet rs = this.stmt.executeQuery(sql);
 
-        } catch (SQLException se) {
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }// do nothing
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
-        }//end try
-        System.out.println("Goodbye!");
-        return isRegistered;
-    } // end registerUser
+			if (!rs.next()) {
+				isRegistered = false;
+			}
 
-    protected void changePassword(String email, String password, String newPassword) {
-        String sql;
-        try {
-            //STEP 2: Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
-            this.stmt = this.conn.createStatement();
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+			} // do nothing
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+		System.out.println("Goodbye!");
+		return isRegistered;
+	} // end registerUser
 
-            sql = "UPDATE users SET password = '" + newPassword + "' WHERE email = '" + email + "'";
-            stmt.executeUpdate(sql);
+	protected void changePassword(String email, String password, String newPassword) {
+		String sql;
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
+			this.stmt = this.conn.createStatement();
 
-        } catch (SQLException se) {
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }// do nothing
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
-        }//end try
-        System.out.println("Goodbye!");
-    } // end changePassword
+			sql = "UPDATE users SET password = '" + newPassword + "' WHERE email = '" + email + "'";
+			stmt.executeUpdate(sql);
 
-    public void readUsersFromFile(String path) throws SQLException {
-        String csvFile = path;
-        BufferedReader br = null;
-        String line = "";
-        String cvsSplitBy = ",";
-        int counter = 0;
-        String sql;
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+			} // do nothing
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} // end finally try
+		} // end try
+		System.out.println("Goodbye!");
+	} // end changePassword
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
-            this.stmt = this.conn.createStatement();
-            br = new BufferedReader(new FileReader(csvFile));
-            while ((line = br.readLine()) != null) {
+	public void readUsersFromFile(String path) throws SQLException {
+		String csvFile = path;
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+		int counter = 0;
+		String sql;
 
-                String[] user = line.split(cvsSplitBy);
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
+			this.stmt = this.conn.createStatement();
+			br = new BufferedReader(new FileReader(csvFile));
+			while ((line = br.readLine()) != null) {
 
-                sql = "INSERT INTO users (first_name, last_name, email, password, interests, attended_per_category) "
-                        + "VALUES (" + "'" + user[0] + "', '" + user[1] + "', '" + user[2] + "', '" + user[3] + "', '" + user[4] + "', '" + user[5] + "'" + ")";
+				String[] user = line.split(cvsSplitBy);
 
-                stmt.executeUpdate(sql);
-            }
+				sql = "INSERT INTO users (first_name, last_name, email, password, interests, attended_per_category) "
+						+ "VALUES (" + "'" + user[0] + "', '" + user[1] + "', '" + user[2] + "', '" + user[3] + "', '"
+						+ user[4] + "', '" + user[5] + "'" + ")";
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } // end try catch block
+				stmt.executeUpdate(sql);
+			}
 
-    }// end readUsersFromFile
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException ex) {
+			Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} // end try catch block
 
-    public void readEventsFromFile(String path) throws SQLException {
-        String csvFile = path;
-        BufferedReader br = null;
-        String line = "";
-        String cvsSplitBy = ",";
-        int counter = 0;
-        String sql;
+	}// end readUsersFromFile
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
-            this.stmt = this.conn.createStatement();
-            br = new BufferedReader(new FileReader(csvFile));
-            while ((line = br.readLine()) != null) {
+	public void readEventsFromFile(String path) throws SQLException {
+		String csvFile = path;
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+		int counter = 0;
+		String sql;
 
-                String[] user = line.split(cvsSplitBy);
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
+			this.stmt = this.conn.createStatement();
+			br = new BufferedReader(new FileReader(csvFile));
+			while ((line = br.readLine()) != null) {
 
-                sql = "insert into events (name, place, date, link, image_link) "
-                        + "VALUES (" + "'" + user[0] + "', '" + user[1] + "', '" + user[2] + "', '" + user[3] + "', '" + user[4] + "'" + ")";
+				String[] user = line.split(cvsSplitBy);
 
-                stmt.executeUpdate(sql);
-            }
+				sql = "insert into events (name, place, date, link, image_link) " + "VALUES (" + "'" + user[0] + "', '"
+						+ user[1] + "', '" + user[2] + "', '" + user[3] + "', '" + user[4] + "'" + ")";
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } // end try catch block
+				stmt.executeUpdate(sql);
+			}
 
-    }// end readEventsFromFile
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException ex) {
+			Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} // end try catch block
+
+	}// end readEventsFromFile
+
+	public static List<Event> read(String path) throws SQLException {
+		String csvFile = path;
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+		int id = 0;
+		List<Event> events = new ArrayList<>();
+
+		String[] user = new String[10];
+		try {
+			br = new BufferedReader(new FileReader(csvFile));
+			while ((line = br.readLine()) != null) {
+				user = line.split(cvsSplitBy);
+				List<String> list = Arrays.asList(user);
+				Event event = new Event();
+				event.setId(id++);
+				event.setName(list.get(0));
+				event.setPlace(list.get(1));
+				event.setDate(list.get(2));
+				event.setLinkEvent(list.get(3));
+				event.setLinkPhoto(list.get(4));
+
+				System.out.println(event);
+				events.add(event);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return events;
+	}
 
 }

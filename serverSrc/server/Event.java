@@ -1,6 +1,7 @@
 package server;
 
 public class Event {
+
 	private int id;
 	private String name;
 	private String place;
@@ -65,5 +66,10 @@ public class Event {
 		this.numGoing = numGoing;
 	}
 	
+	@Override
+	public String toString() {
+		return "Event [id=" + id + ", name=" + name + ", place=" + place + ", date=" + date + ", linkEvent=" + linkEvent
+				+ ", linkPhoto=" + linkPhoto + ", numGoing=" + numGoing + "]";
+	}
 
 }

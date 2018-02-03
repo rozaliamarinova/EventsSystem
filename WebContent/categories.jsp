@@ -61,21 +61,23 @@
 <h4 style = "margin-left: 50px;">Choose whatever you like to attend!</h4>
 <br />
 <div
-	style=" height: 600px; padding: 20px;">
+	style="padding: 20px;">
 	<div class="bg-content">
 		<div id="content" style="width:100%;">
 			<div class="card-group">
 			<% ArrayList<Event> events = (ArrayList)session.getAttribute("events");%>
 			<% for(Event event : events) { %>
-			  <div class="card bg-light text-dark" style="margin-right:20px;">
-			    <img class="card-img-top" src="<%=event.getLinkEvent() %>" alt="Card image cap">
-			    <div class="card-block" style="padding:12px;">
+			<div class="col-sm-3 col-xs-5">
+			  <div class="card bg-light text-dark" style="margin-right:10px;">
+			    <img class="card-img-top" src="<%=event.getLinkPhoto() %>" alt="Card image cap">
+			    <div class="card-block" style="padding:16px;">
 			      <h4 class="card-title"><%=event.getName() %></h4>
 			      <p class="card-text">	<p class="text-muted" style="display:inline-block;">Venue : </p>
 			      <%=event.getPlace() %>
 			       <p class="text-muted" style="display:inline-block;"> on </p>
 			       <%=event.getDate() %>
-			      <p class="text-muted" style="display:inline-block;width:80%;;"> For more information : 			      
+			       <br/>
+			      <p class="text-muted" style="display:inline-block;width:90%;;"> For more information : 			      
 			      <a style="text-decoration: underline; cursor:pointer;color:#17a2b8;"><%=event.getLinkEvent() %></a>
 			       </p>
 			      </p>
@@ -85,6 +87,7 @@
 			    </p>
 			      <small class="text-muted" style="margin-bottom:2px;"><%=event.getNumGoing() %> going</small><br/>
 			    </div>
+			  </div>
 			  </div>
 			<% } %>
 			</div>
