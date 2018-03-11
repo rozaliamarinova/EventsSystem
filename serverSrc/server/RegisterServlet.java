@@ -1,9 +1,6 @@
 package server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,38 +8,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import database.JDBC;
 import exceptions.InvalidEmailException;
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserLoginException;
 
-/**
- * Servlet implementation class Register
- */
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Default constructor.
-	 */
 	public RegisterServlet() {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String name = request.getParameter("name");
@@ -53,9 +37,9 @@ public class RegisterServlet extends HttpServlet {
 		String emailConfirmation = request.getParameter("confirmEmail");
 
 		if (checkForErrors(name, lastname, pass, passConfirmation, email, emailConfirmation)) {
-			//RequestDispatcher view = request.getRequestDispatcher("register.html");
+			// RequestDispatcher view = request.getRequestDispatcher("register.html");
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			
+
 		} else {
 			String categories = "q00000000000000000000000";
 			HttpSession session = request.getSession();
@@ -64,9 +48,12 @@ public class RegisterServlet extends HttpServlet {
 			session.setAttribute("interests", categories);
 			session.setAttribute("isLogged", true);
 			User user = new User(name, lastname, pass, email, categories);
-			//UserDAO 
+			// UserDAO
+	        
+			//JDBC dbConnection = new JDBC();
+			//dbConnection.registerUser(user);
 			response.setStatus(200);
-			
+
 		}
 
 	}

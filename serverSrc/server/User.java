@@ -8,6 +8,8 @@ public class User {
 	private int id;
 	private String interests;
 	
+	public User() {}
+	
 	public User(String name, String lastName, String pass, String email, String interests) {
 		this.name = name;
 		this.lastName = lastName;
@@ -71,10 +73,6 @@ public class User {
 	
 	public String getUsername() {
 		return this.name;
-	}
-	
-	public String getLastname() {
-		return this.lastName;
 	}
 	
 	public String getEmail() {
