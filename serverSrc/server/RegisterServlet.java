@@ -1,6 +1,8 @@
 package server;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import database.JDBC;
+import exceptions.AlreadyRegisteredUserException;
 import exceptions.InvalidEmailException;
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserLoginException;
@@ -50,8 +53,19 @@ public class RegisterServlet extends HttpServlet {
 			User user = new User(name, lastname, pass, email, categories);
 			// UserDAO
 	        
-			//JDBC dbConnection = new JDBC();
-			//dbConnection.registerUser(user);
+			JDBC dbConnection = new JDBC();
+			try {
+				dbConnection.registerUser(user);
+			} catch (SQLException | AlreadyRegisteredUserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				dbConnection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			response.setStatus(200);
 
 		}

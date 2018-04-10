@@ -4,15 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import exceptions.AlreadyRegisteredUserException;
 import server.Event;
 import server.User;
 
@@ -33,28 +29,27 @@ public class JDBC {
 		try {
 			Class.forName(JDBC_DRIVER);
 			this.conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			System.out.println("conn");
 			this.setStmt(this.conn.createStatement());
-		} catch (ClassNotFoundException ex) {
-			Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("Cannot find the driver in the classpath!", e);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if (stmt != null) {
-					conn.close();
-				}
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}
 		}
 
 	}
-
-	private void setStmt(Statement stmt) {
-		this.stmt = stmt;
+	
+	
+	
+	//TODO : how to make close so I can do it with try close without even calling "close()"
+	public void close() throws SQLException {
+		this.conn.close();
 	}
 
-	
+	 private void setStmt(Statement stmt) {
+	 this.stmt = stmt;
+	 }
+
 	public int getEventID(String name) {
 		int id = 0;
 		String sql = "Select events_id From events Where name = '" + name + "'";
@@ -69,7 +64,7 @@ public class JDBC {
 		}
 		return id;
 	}
-	
+
 	public Map<Integer, String[]> executeSelectQuery(String sql) {
 		Map<Integer, String[]> rows = new HashMap<Integer, String[]>();
 
@@ -140,52 +135,37 @@ public class JDBC {
 
 	}
 
-	public void registerUser(User user) {
-		String sql=
-			"INSERT IGNORE INTO users (first_name, last_name, email, password, interests) "
-			+ "VALUES ('" + user.getName() + "', '" + user.getLastName() + "', '" +
-			user.getEmail() + "', '" + user.getPass() + "', '" + 
-			user.getInterests() + "')";
-		try {
-			stmt.executeUpdate(sql);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public void registerUser(User user) throws SQLException,
+		AlreadyRegisteredUserException {
+		String sql = "INSERT IGNORE INTO users (first_name, last_name, email, password, interests) " + "VALUES ('"
+				+ user.getName() + "', '" + user.getLastName() + "', '" + user.getEmail() + "', '" + user.getPass()
+				+ "', '" + user.getInterests() + "')";
+		
+			int count = stmt.executeUpdate(sql);
+			if (count < 1) {
+				throw new AlreadyRegisteredUserException();
+			}
 	}
-	
+
 	public boolean isValidLogin(String email, String password) {
-		String sql = "SELECT * FROM users WHERE email = '" + 
-			email + "' AND password = '" + password + "'";
-		System.out.println("SELECT * FROM users WHERE email = '" + email 
-				+ "' AND password = '" + password + "'");
+		String sql = "SELECT * FROM users WHERE email = '" + email + "' AND password = '" + password + "'";
+		System.out.println("SELECT * FROM users WHERE email = '" + email + "' AND password = '" + password + "'");
 
 		boolean isValidLogin = false;
-		try (ResultSet rs = stmt.executeQuery(sql)){
-				isValidLogin = rs.next();
+		try (ResultSet rs = stmt.executeQuery(sql)) {
+			isValidLogin = rs.next();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return isValidLogin;
 	}
 
-	public boolean isValidRegistration(String email, String password) {
-		String sql = "SELECT * FROM users WHERE email = '" + email + "'";
-		
-		boolean isValidRegistration = true;
-		try (ResultSet rs = stmt.executeQuery(sql)){
-			isValidRegistration = rs.next();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return isValidRegistration;
-	}
-
 	public void changePassword(String email, String password, String newPassword) {
-		String sql = "UPDATE users SET password = '" 
-				+ newPassword + "' WHERE email = '" + email + "'";;
+		String sql = "UPDATE users SET password = '" + newPassword + "' WHERE email = '" + email + "'";
+		;
 		try {
 			stmt.executeUpdate(sql);
-		} catch (SQLException  e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
