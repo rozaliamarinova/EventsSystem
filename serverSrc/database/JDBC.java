@@ -39,15 +39,12 @@ public class JDBC {
 
 	}
 	
-	
-	
-	//TODO : how to make close so I can do it with try close without even calling "close()"
 	public void close() throws SQLException {
 		this.conn.close();
 	}
 
 	 private void setStmt(Statement stmt) {
-	 this.stmt = stmt;
+		 this.stmt = stmt;
 	 }
 
 	public int getEventID(String name) {
@@ -124,17 +121,6 @@ public class JDBC {
 		return events;
 	}
 
-	public void registerUser(String firstName, String lastName, String email, String password, String interests) {
-		String sql = "INSERT IGNORE INTO users (first_name, last_name, email, password, interests) " + "VALUES (" + "'"
-				+ firstName + "', '" + lastName + "', '" + email + "', '" + password + "', '" + interests + "'" + ")";
-		try {
-			stmt.executeUpdate(sql);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	public void registerUser(User user) throws SQLException,
 		AlreadyRegisteredUserException {
 		String sql = "INSERT IGNORE INTO users (first_name, last_name, email, password, interests) " + "VALUES ('"
@@ -147,6 +133,22 @@ public class JDBC {
 			}
 	}
 
+	public User getInfoForUserBasedOnMail(String email, String password) {
+		User user = null;
+		String sql = "SELECT first_name FROM users WHERE email = '" + email + "' AND password = '" + password + "'";
+		System.out.println("SELECT * FROM users WHERE email = '" + email + "' AND password = '" + password + "'");
+
+		try (ResultSet rs = stmt.executeQuery(sql)) {
+			if (rs.next()) {
+	            String name = rs.getString("first_name");
+	            user = new User(name, email);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
 	public boolean isValidLogin(String email, String password) {
 		String sql = "SELECT * FROM users WHERE email = '" + email + "' AND password = '" + password + "'";
 		System.out.println("SELECT * FROM users WHERE email = '" + email + "' AND password = '" + password + "'");
@@ -162,7 +164,6 @@ public class JDBC {
 
 	public void changePassword(String email, String password, String newPassword) {
 		String sql = "UPDATE users SET password = '" + newPassword + "' WHERE email = '" + email + "'";
-		;
 		try {
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {

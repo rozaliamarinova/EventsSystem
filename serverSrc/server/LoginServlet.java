@@ -18,23 +18,21 @@ public class LoginServlet extends HttpServlet {
         super();
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response){
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String pass = request.getParameter("password");
-		
-		
-		//String passConfirmation = request.getParameter("confirmPassword");
 
 		if (pass.length() < 8) { //|| !getPassword(email).equals(pass)) {
 			RequestDispatcher view = request.getRequestDispatcher("index.html");
 			view.forward(request, response);
 		} else {
 			
-			//set session - email, 
+			
 			HttpSession session = request.getSession();
 			session.setAttribute("email", email);
 			
@@ -44,7 +42,13 @@ public class LoginServlet extends HttpServlet {
 			view.forward(request, response);
 		}
 
-		doGet(request, response);
+		
 	}
 
+	private void setUserSession(HttpServletRequest request, User user) {
+		HttpSession session = request.getSession();
+		session.setAttribute("username", user.getUsername());
+		session.setAttribute("email", user.getEmail());
+		session.setAttribute("isLogged", true);
+	}
 }

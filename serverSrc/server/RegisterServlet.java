@@ -12,21 +12,16 @@ import javax.servlet.http.HttpSession;
 
 import database.JDBC;
 import exceptions.AlreadyRegisteredUserException;
-import exceptions.InvalidEmailException;
-import exceptions.InvalidPasswordException;
-import exceptions.InvalidUserLoginException;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public RegisterServlet() {
-		// TODO Auto-generated constructor stub
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -40,36 +35,27 @@ public class RegisterServlet extends HttpServlet {
 		String emailConfirmation = request.getParameter("confirmEmail");
 
 		if (checkForErrors(name, lastname, pass, passConfirmation, email, emailConfirmation)) {
-			// RequestDispatcher view = request.getRequestDispatcher("register.html");
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-
 		} else {
-			String categories = "q00000000000000000000000";
-			HttpSession session = request.getSession();
-			session.setAttribute("username", name);
-			session.setAttribute("email", email);
-			session.setAttribute("interests", categories);
-			session.setAttribute("isLogged", true);
-			User user = new User(name, lastname, pass, email, categories);
-			// UserDAO
-	        
-			JDBC dbConnection = new JDBC();
-			try {
+			String interests = "q00000000000000000000000";
+			User user = new User(name, lastname, pass, email, interests);
+			setUserSession(request, user);
+			try(JDBC dbConnection = new JDBC()) {
 				dbConnection.registerUser(user);
+				response.setStatus(200);
 			} catch (SQLException | AlreadyRegisteredUserException e) {
-				// TODO Auto-generated catch block
+				// TODO: if the user is already registered show in the GUI appropriate error
 				e.printStackTrace();
 			}
-			try {
-				dbConnection.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			response.setStatus(200);
-
 		}
+	}
 
+	private void setUserSession(HttpServletRequest request, User user) {
+		HttpSession session = request.getSession();
+		session.setAttribute("username", user.getUsername());
+		session.setAttribute("email", user.getEmail());
+		session.setAttribute("interests", user.getInterests());
+		session.setAttribute("isLogged", true);
 	}
 
 	private boolean checkForErrors(String name, String lastname, String pass, String passConfirmation, String email,
