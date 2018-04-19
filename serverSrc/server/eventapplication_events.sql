@@ -24,6 +24,8 @@ USE `eventapplication`;
 DROP TABLE IF EXISTS `events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
+SET NAMES utf8;
+
 CREATE TABLE `events` (
   `events_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
@@ -33,7 +35,8 @@ CREATE TABLE `events` (
   `image_link` varchar(200) DEFAULT NULL,
   `attending` int(11) DEFAULT NULL,
   `category` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`events_id`)
+  PRIMARY KEY (`events_id`),
+  UNIQUE KEY (`name`, `date`, `place`)
 ) ENGINE=InnoDB AUTO_INCREMENT=745 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
