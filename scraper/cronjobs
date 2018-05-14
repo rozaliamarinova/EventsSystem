@@ -1,0 +1,4 @@
+# cron job for the scraper script execution
+
+0 3,15 * * * /home/todorgg/develop/EventsSystem/scraper/scraper.py >> /home/todorgg/develop/EventsSystem/scraper/scraper.log
+30 17 * * * /home/todorgg/develop/EventsSystem/scraper/scraper.py >> /home/todorgg/develop/EventsSystem/scraper/scraper.log 

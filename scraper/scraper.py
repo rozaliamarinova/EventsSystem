@@ -75,10 +75,11 @@ def parseEventPage(pageURL):
     pageSource = requests.get(pageURL).text
     pageSoup = BeautifulSoup(pageSource, 'html.parser')
     imageLink = pageSoup.find("div", class_="pageheader-image pageheader-image--regular")
-    if imageLink is None:
-        imageLink = ""
-    else:
-        imageLink = imageLink.find("img").attrs["src"]
+    #if imageLink is None:
+    #    imageLink = ""
+    #else:
+    #    imageLink = "http:" + imageLink.find("img").attrs["src"]
+    imageLinkStr = getImageLink(imageLink)
     subEvents = pageSoup.findAll("li", class_="List-item clearfix")
     listEvents = []
     for subEvent in subEvents:
@@ -87,9 +88,19 @@ def parseEventPage(pageURL):
         eventAttrs["eventLocation"] = getEventLocation(subEvent) 
         eventAttrs["datetime"] = getEventDateTime(subEvent)
         eventAttrs["pageLink"] = pageURL
-        eventAttrs["imgLink"] = "http:" + imageLink
+        eventAttrs["imgLink"] = imageLinkStr
         listEvents.append(eventAttrs)
     return listEvents
+
+def getImageLink(imageLink):
+    resultLink = ""
+    if imageLink is None :
+        return resultLink
+
+    resultLink = imageLink.find("img").attrs["src"]
+    if resultLink is not None and not (resultLink == "") :
+        resultLink = "http:" + resultLink
+    return resultLink
 
 def parseEvents(rootPageURL):
     parsedEvents = []
@@ -127,7 +138,7 @@ def writeEventToDatabase(dbCursor, event):
     if len(event) > numberEventFeatures:
         return
     
-    query = "INSERT INTO `events` (name, place, date, link, image\-link) VALUES("
+    query = "INSERT INTO `events` (name, place, date, link, image_link) VALUES("
     query = query +  "'" + event["eventName"] + "'," 
     query = query +  "'" + event["eventLocation"]+  "'," 
     query = query +  "'" + event["datetime"]+  "'," 
@@ -149,15 +160,18 @@ user = "root"
 passwd = "root"
 database = "eventapplication"
 
-dbConnection = MySQLdb.connect(host, user, passwd, database)
+dbConnection = MySQLdb.connect(host, user, passwd, database, use_unicode=True, charset='utf8')
 cursor = dbConnection.cursor()
 
 for event in parsedEvents:
     writeEventToDatabase(cursor, event)
 
-#with open('events.csv', 'w') as csv_file:
-#    attributes = ['eventName', 'eventLocation', 'datetime', 'pageLink', 'imgLink']
-#    writer = csv.DictWriter(csv_file, attributes, delimiter=';')
-#    for row in parsedEvents:
-#        writer.writerow(row)
+dbConnection.commit();
+dbConnection.close()
+
+with open('eventsNew.csv', 'w') as csv_file:
+    attributes = ['eventName', 'eventLocation', 'datetime', 'pageLink', 'imgLink']
+    writer = csv.DictWriter(csv_file, attributes, delimiter=';')
+    for row in parsedEvents:
+        writer.writerow(row)
 
